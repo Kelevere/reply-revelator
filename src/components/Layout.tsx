@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
+import { useAuth } from '@/hooks/useAuth';
 import { 
   LayoutDashboard, 
   Database, 
@@ -10,7 +11,8 @@ import {
   Menu,
   X,
   Bot,
-  ChevronRight
+  ChevronRight,
+  LogOut
 } from 'lucide-react';
 
 interface LayoutProps {
@@ -28,6 +30,7 @@ const navigation = [
 
 export const Layout: React.FC<LayoutProps> = ({ children, currentSection, onSectionChange }) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const { user, signOut } = useAuth();
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-muted/20 to-background">
@@ -102,6 +105,32 @@ export const Layout: React.FC<LayoutProps> = ({ children, currentSection, onSect
               </div>
             </div>
           </Card>
+        </div>
+
+        {/* User Profile */}
+        <div className="p-4 border-t border-border">
+          <div className="flex items-center space-x-3 mb-3">
+            <div className="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center">
+              <span className="text-sm font-medium text-primary">
+                {user?.email?.charAt(0).toUpperCase()}
+              </span>
+            </div>
+            <div className="flex-1 min-w-0">
+              <p className="text-sm font-medium text-foreground truncate">
+                {user?.email}
+              </p>
+              <p className="text-xs text-muted-foreground">Administrador</p>
+            </div>
+          </div>
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={signOut}
+            className="w-full justify-start text-muted-foreground hover:text-foreground"
+          >
+            <LogOut className="w-4 h-4 mr-2" />
+            Sair
+          </Button>
         </div>
       </div>
 
